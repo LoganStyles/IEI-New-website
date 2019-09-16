@@ -1,0 +1,1 @@
+!function(n){var t=[];n.onerror=function(n,r,o,u,i){t.push(n+", "+r+", line "+o+", column "+u)},n._getErrors=function(){return t}}(window);

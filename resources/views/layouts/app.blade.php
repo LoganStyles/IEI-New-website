@@ -1,0 +1,10 @@
+@include('office.templates.header')
+@guest
+@else
+    @include('office.templates.sidebar')    
+@endguest
+    @yield('content')
+@guest
+@else
+    @include('office.templates.footer')
+@endguest

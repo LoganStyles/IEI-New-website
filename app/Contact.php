@@ -1,0 +1,19 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Contact extends Model
+{
+    protected $fillable = [
+        'name',
+        'email',
+        'mobile',
+        'pin',
+        'employer',
+        'subject',
+        'type',
+        'message',
+    ];
+}
