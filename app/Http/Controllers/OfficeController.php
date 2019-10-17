@@ -169,6 +169,7 @@ class OfficeController extends Controller
      */
     public function store(Request $request,$type="")
     {
+        
         $view = '';
         $resource = null;
         unset($_POST["_token"]);
@@ -216,10 +217,11 @@ class OfficeController extends Controller
             ]);
         }
         if(isset($_POST['title']) && isset($_POST['category'])) {
+            // print_r($request->all());exit;
 
             $this->validate($request, [
                 'title' => 'required|string|max:255',
-                'description' => 'required|string',  
+                // 'description' => 'required|string',  
                 'category' => 'required|string|max:255'
             ]);
         }
@@ -252,6 +254,7 @@ class OfficeController extends Controller
      */
     public function save(Request $request,$type="",$id=0)
     {
+        
         $message = "";
         unset($_POST["_token"]);
         if($request->hasFile('image')){
@@ -271,14 +274,17 @@ class OfficeController extends Controller
             $_POST['image'] = $upload;
         }
         if($request->hasFile('file')){
+            
             $file = $request->file('file');
             $upload = time().'_'.$type.'_file.'.$file->getClientOriginalExtension();
             $location = (($type=='files')?'uploads/documents/'.strtolower(str_ireplace(" ","-",$_POST['category'])).'/':'');
             Storage::disk('public')->putFileAs($location,$file,$upload);
             $_POST['file'] = $upload;
-            $_POST['size'] = $request->file('file')->getSize();;
+            $_POST['size'] = $request->file('file')->getSize();
+            
         }
         if(isset($_POST['table'])) {
+            
             $param = explode('::',$type);
             $type = $_POST['table'];
 
@@ -287,16 +293,19 @@ class OfficeController extends Controller
                 'slug' => 'required|string|max:255',
             ]);
         }
-
+        
         $_POST["updated_at"] = date('Y-m-d H:m:s');
+
         if($type=='files') { 
-            $type=='downloads';
+            $type='downloads';
         }elseif($type=='downloads') { 
             $type = 'histories';
         }elseif($type=='rate') { 
             $type = 'rates';
         }
-        if(isset($_POST['table'])) {                
+        
+        if(isset($_POST['table'])) {    
+                       
             unset($_POST['table']);
             $data = DB::table($type)->where('slug',$param[0])->update($_POST);
         }else{
